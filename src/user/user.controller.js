@@ -63,7 +63,7 @@ const createUser = async (req, res, next) => {
 
     // response
 
-    res.json({
+    res.status(201).json({
         accessToken : token,
     })
 
@@ -76,4 +76,46 @@ const createUser = async (req, res, next) => {
 
 }
 
-export { createUser };
+const loginUser = async (req, res, next) => {
+    
+    const {username, password} = req.body;
+
+    // validation
+
+    if (!username || !password) {
+        return next(new Error('All fields are required', 400));
+    }
+
+    let user = null;
+
+    try {
+        user = await User.findOne({username});
+
+        if (!user) {
+            return next(new Error('User not found', 404));
+        }
+    } catch (error) {
+        return next(new Error('Error while finding user', 500));
+    }
+
+    // password matching
+
+    try {
+        // password matching
+        const isMatch = await bcrypt.compare(password, user.password);
+    
+        if (!isMatch) {
+            return next(new Error('Username or password incorrect', 400));
+        }
+    
+        // JWT token generation
+        const token = jwt.sign({ sub: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    
+        res.status(200).json({ message: 'Login successful', token });
+    } catch (error) {
+        next(error);
+    }
+
+}
+
+export { createUser, loginUser };
