@@ -16,23 +16,41 @@ const createUser = async (req, res, next) => {
 
     // database call
 
-    const user = await User.findOne({username});
+    try {
+     
+        const user = await User.findOne({username});
 
     if (user) {
-        return next(new Error('User already exist with this username'));
+        return next(new Error('User already exist with this username', 400));
+    }
+        
+    } catch (error) {
+        return next( new Error('errr while getting user', 500));
+        
     }
 
     // password hashing
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const newUser = await User.create({
-        name,
-        username,
-        password: hashedPassword,
-    });
+    let newUser;
 
-    // JWT token generation
+    try {
+
+        newUser = await User.create({
+            name,
+            username,
+            password: hashedPassword,
+        });
+
+    } catch (error) {
+        return next(new Error('Error while hashing password', 500));
+        
+    }
+
+    try {
+        
+         // JWT token generation
 
     const token = jwt.sign({
         sub: newUser._id
@@ -48,6 +66,13 @@ const createUser = async (req, res, next) => {
     res.json({
         accessToken : token,
     })
+
+    } catch (error) {
+
+        return next(new Error('Error while generating token', 500));
+
+    }
+
 
 }
 
