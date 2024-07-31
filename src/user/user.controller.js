@@ -1,4 +1,6 @@
+import bcrypt from "bcrypt"
 import User from "./user.model.js";
+
 
 const createUser = async (req, res, next) => {
 
@@ -18,6 +20,10 @@ const createUser = async (req, res, next) => {
     if (user) {
         return next(new Error('User already exist with this username'));
     }
+
+    // password hashing
+
+    const hashedPassword = await bcrypt.hash(password, 10);
 
     // process
 
