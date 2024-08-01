@@ -2,6 +2,7 @@ import express from 'express';
 import globalErrorHandler from './middlewares/globalErrorHandler.js';
 import { error } from 'console';
 import userRouter from './user/user.router.js';
+import applicationRouter from './application/application.router.js';
 
 const app = express();
 
@@ -14,7 +15,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/api/v1/users', userRouter);
-// app.use('/api/vi/applications', applicationRoutes);
+app.use("/api/v1/applications", applicationRouter);
 
 // Global error handler
 
