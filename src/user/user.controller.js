@@ -7,7 +7,6 @@ const createUser = async (req, res, next) => {
 
     const { name, username, password } = req.body;
 
-
     // validation
 
     if (!name || !username || !password) {
