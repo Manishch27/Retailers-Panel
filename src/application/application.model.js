@@ -76,7 +76,11 @@ const applicationSchema = new mongoose.Schema({
             default: 'pending' 
       },
 
-      createdBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
+      createdBy: {
+            type: mongoose.Schema.Types.ObjectId, 
+            ref: 'User'
+      }
+      
 }, {timestamp : true});
 
 const Application = mongoose.model('Application', applicationSchema);

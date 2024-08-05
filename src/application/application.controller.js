@@ -1,10 +1,10 @@
 import cloudinary from '../config/cloudinary.config.js';
 import fs from "node:fs"
 import Application from './application.model.js';
-import {uuid} from 'uuidv4';
+import { v4 as uuid } from 'uuid';
  
 const createApplication = async (req, res) => {
-    const { fullName, fatherName, dateOfBirth, gender, aadhaarNo, mobileNo, emailId, address, postOffice, district, state} = req.body;
+    const { fullName, fatherName, dateOfBirth, gender, aadhaarNo, mobileNo, emailId, address, postOffice, district, state, status} = req.body;
 
     const files = req.files;
 
@@ -62,8 +62,55 @@ const createApplication = async (req, res) => {
             return res.status(500).json({ message: 'Error in file upload', error });
         }
 
-        // 
 
+
+        
+        
+        
+        
+    }
+    
+    // Get all the applications from the database
+
+const getAllApplications = async (req, res) => {
+    try {
+        const applications = await Application.find().populate("createdBy");
+        console.log(applications);
+        res.status(200).json(applications);
+    } catch (error) {
+        console.error('Error fetching applications:', error);
+        res.status(500).json({ error: 'Failed to fetch applications' });
+    }
+};
+
+
+// get all the applications of the individual retailer
+
+const getRetailerApplications = async (req, res) => {
+    const { id } = req.params;
+    try {
+        const applications = await Application.find({ retailerId: id });
+        res.status(200).json(applications);
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to fetch applications' });
+    }
+};
+
+
+// update the status of the application
+
+const updateApplicationStatus = async (req, res) => {
+    const { id } = req.params;
+    const { status } = req.body;
+    try {
+        await Application.findByIdAndUpdate
+        (id, { status });
+        res.status(200).json({ message: 'Application status updated successfully' });
+    }
+    catch (error) {
+        res.status(500).json({ error: 'Failed to update application status' });
+    }
 }
 
-export { createApplication };
+
+export { createApplication, getAllApplications, getRetailerApplications, updateApplicationStatus };
