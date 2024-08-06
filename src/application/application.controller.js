@@ -47,7 +47,8 @@ const createApplication = async (req, res) => {
                     postOffice,
                     district,
                     state,
-                    fingerprints: fingerprintData
+                    fingerprints: fingerprintData,
+                    createdBy: req.user._id,
                 });
             
                 await application.save();
@@ -89,9 +90,13 @@ const getAllApplications = async (req, res) => {
 const getRetailerApplications = async (req, res) => {
     const { id } = req.params;
     try {
-        const applications = await Application.find({ retailerId: id });
+        const applications = await Application.find({ createdBy: id });
+        if (!applications) {
+            return res.status(404).json({ error: 'No applications found for this retailer' });
+        }
         res.status(200).json(applications);
     } catch (error) {
+        console.error('Error fetching applications:', error);
         res.status(500).json({ error: 'Failed to fetch applications' });
     }
 };

@@ -13,7 +13,7 @@ applicationRouter.use(isAuthenticated);
 
 applicationRouter.post('/', isRetailer, upload.array('fingerprints', 5), createApplication);
 applicationRouter.get('/', isAdmin, getAllApplications);
-applicationRouter.get('/retailer/:id', isRetailer, getRetailerApplications);
+applicationRouter.get('/retailer/:id', isAdmin, getRetailerApplications);
 applicationRouter.put('/:id', isAdmin, updateApplicationStatus);
 
 export default applicationRouter;
