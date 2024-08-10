@@ -7,9 +7,9 @@ import path from 'path';
 
 const app = express();
 
-// Configure CORS to allow requests from specific origins
+// Configure CORS
 const corsOptions = {
-    origin: 'http://localhost:5173',
+    origin: 'http://localhost:5173', // Replace with your frontend URL
     optionsSuccessStatus: 200
 };
 app.use(cors(corsOptions));
@@ -20,21 +20,14 @@ app.use(express.urlencoded({ extended: true }));
 
 // Define API routes
 app.use('/api/v1/users', userRouter);
-app.use("/api/v1/applications", applicationRouter);
+app.use('/api/v1/applications', applicationRouter);
 
-// Serve static files and handle other routes for production
-if (process.env.NODE_ENV === 'production') {
-    const dirpath = path.resolve();
-    const frontendDistPath = path.join(dirpath, 'Frontend', 'dist');
-
-    console.log('Serving static files from:', frontendDistPath);
-
-    app.use(express.static(frontendDistPath));
-
-    // Handle all other routes by serving index.html
-    app.get('*', (req, res) => {
-        res.sendFile(path.join(frontendDistPath, 'index.html'));
-    });
+// Serve the frontend
+if(process.env.NODE_ENV === 'production') {
+app.use(express.static(path.join(process.cwd(), 'Frontend', 'dist')));
+app.get('*', (req, res) => {
+    res.sendFile(path.join(process.cwd(), 'Frontend', 'dist', 'index.html'));
+});
 }
 
 // Define a default route

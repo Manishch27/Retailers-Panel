@@ -117,5 +117,17 @@ const updateApplicationStatus = async (req, res) => {
     }
 }
 
+// Delete the application assinged to the retailer
 
-export { createApplication, getAllApplications, getRetailerApplications, updateApplicationStatus };
+const deleteApplication = async (req, res) => {
+    const { id } = req.params;
+    try {
+        await Application.findByIdAndDelete(id);
+        res.status(200).json({ message: 'Application deleted successfully' });
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to delete application' });
+    }
+}
+
+
+export { createApplication, getAllApplications, getRetailerApplications, updateApplicationStatus, deleteApplication };

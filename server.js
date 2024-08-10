@@ -10,7 +10,7 @@ dotenv.config(
 );
 
 const startServer = async () => {
-    
+
     await connectDB();
 
     try {
