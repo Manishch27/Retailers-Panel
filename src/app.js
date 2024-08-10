@@ -24,7 +24,7 @@ app.use("/api/v1/applications", applicationRouter);
 
 // Serve static files and handle other routes for production
 if (process.env.NODE_ENV === 'production') {
-    const dirpath = path.resolve('..');
+    const dirpath = path.resolve();
     const frontendDistPath = path.join(dirpath, 'Frontend', 'dist');
 
     console.log('Serving static files from:', frontendDistPath);
