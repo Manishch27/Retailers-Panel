@@ -76,11 +76,9 @@ const createUser = async (req, res, next) => {
 }
 
 const loginUser = async (req, res, next) => {
-
     const { username, password } = req.body;
 
-    // validation
-
+    // Validation
     if (!username || !password) {
         return next(new Error('All fields are required', 400));
     }
@@ -97,10 +95,8 @@ const loginUser = async (req, res, next) => {
         return next(new Error('Error while finding user', 500));
     }
 
-    // password matching
-
+    // Password matching
     try {
-        // password matching
         const isMatch = await bcrypt.compare(password, user.password);
 
         if (!isMatch) {
@@ -108,14 +104,24 @@ const loginUser = async (req, res, next) => {
         }
 
         // JWT token generation
-        const token = jwt.sign({ sub: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+        const token = jwt.sign(
+            { sub: user._id, admin: user.admin }, // Include admin status in the token payload
+            process.env.JWT_SECRET,
+            { expiresIn: '1h' }
+        );
 
-        res.status(200).json({ message: 'Login successful', token });
+        res.status(200).json({
+            message: 'Login successful',
+            token,
+            admin: user.admin, // Include admin status in the response
+            id: user._id,
+            name: user.name
+        });
     } catch (error) {
         next(error);
     }
+};
 
-}
 
 const getAllRetailers = async (req, res, next) => {
     try {
@@ -128,9 +134,9 @@ const getAllRetailers = async (req, res, next) => {
 
 const updateRetailer = async (req, res, next) => {
     const { id } = req.params;
-    const {name, username, password, tokens } = req.body;
+    const { name, username, password, tokens } = req.body;
     try {
-        const updatedData = {name, username, tokens };
+        const updatedData = { name, username, tokens };
         if (password) {
             updatedData.password = await bcrypt.hash(password, 10);
         }

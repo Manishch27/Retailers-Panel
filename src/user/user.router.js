@@ -15,7 +15,7 @@ userRouter.post('/register', isAuthenticated, isAdmin, createUser);
 
 userRouter.post('/login', loginUser);
 
-userRouter.get('/', isAuthenticated, isAdmin, getAllRetailers);
+userRouter.get('/', isAuthenticated, getAllRetailers);
 
 userRouter.put('/:id',  isAuthenticated, isAdmin, updateRetailer);
 

@@ -1,14 +1,16 @@
 import app from "./src/app.js";
 import dotenv from 'dotenv';
 import connectDB from "./src/db/index.js";
-
+import cors from 'cors';
+import path from 'path';
+import express from 'express';
 
 dotenv.config(
-    {path: './.env'}
+    { path: './.env' }
 );
 
 const startServer = async () => {
-
+    
     await connectDB();
 
     try {
