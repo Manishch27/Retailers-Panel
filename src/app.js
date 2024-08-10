@@ -23,11 +23,26 @@ app.use('/api/v1/users', userRouter);
 app.use('/api/v1/applications', applicationRouter);
 
 // Serve the frontend
-if(process.env.NODE_ENV === 'production') {
-app.use(express.static(path.join(process.cwd(), 'Frontend', 'dist')));
-app.get('*', (req, res) => {
-    res.sendFile(path.join(process.cwd(), 'Frontend', 'dist', 'index.html'));
-});
+// if(process.env.NODE_ENV === 'production') {
+// app.use(express.static(path.join(process.cwd(), 'Frontend', 'dist')));
+// app.get('*', (req, res) => {
+//     res.sendFile(path.join(process.cwd(), 'Frontend', 'dist', 'index.html'));
+// });
+// }
+
+if (process.env.NODE_ENV === 'production') {
+    const dirpath = path.resolve('');
+    const frontendDistPath = path.join(dirpath, 'Frontend', 'dist');
+
+    console.log('Serving static files from:', frontendDistPath);
+
+    // Serve static files
+    app.use(express.static(frontendDistPath));
+
+    // Serve index.html for all other routes
+    app.get('*', (req, res) => {
+        res.sendFile(path.join(frontendDistPath, 'index.html'));
+    });
 }
 
 // Define a default route
