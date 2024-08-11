@@ -31,16 +31,20 @@ app.use('/api/v1/applications', applicationRouter);
 // }
 
 if (process.env.NODE_ENV === 'production') {
-    const dirpath = path.resolve('');
+    const dirpath = path.resolve();
     const frontendDistPath = path.join(dirpath, 'Frontend', 'dist');
 
     console.log('Serving static files from:', frontendDistPath);
 
-    // Serve static files
+    // Serve static files from the frontend dist directory
     app.use(express.static(frontendDistPath));
 
     // Serve index.html for all other routes
     app.get('*', (req, res) => {
+        if (req.originalUrl.startsWith('/api')) {
+            // If the request starts with '/api', pass it to the next handler
+            return next();
+        }
         res.sendFile(path.join(frontendDistPath, 'index.html'));
     });
 }
