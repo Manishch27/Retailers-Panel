@@ -56,7 +56,7 @@ const createUser = async (req, res, next) => {
         },
             process.env.JWT_SECRET,
 
-            { expiresIn: '1h' }
+            { expiresIn: '1d' } // 1 day token expiry
         )
 
 
@@ -107,7 +107,7 @@ const loginUser = async (req, res, next) => {
         const token = jwt.sign(
             { sub: user._id, admin: user.admin }, // Include admin status in the token payload
             process.env.JWT_SECRET,
-            { expiresIn: '1h' }
+            { expiresIn: '1d' } // 1 day token expiry
         );
 
         res.status(200).json({
