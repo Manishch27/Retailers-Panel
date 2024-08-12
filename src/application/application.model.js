@@ -1,16 +1,5 @@
 import mongoose from "mongoose";
 
-const fingerprintSchema = new mongoose.Schema({
-      url: {
-            type: String,
-            required: true
-      },
-
-      id: { 
-            type: String,
-      }
-});
-
 const applicationSchema = new mongoose.Schema({
       fullName: { 
             type: String, 
@@ -68,7 +57,12 @@ const applicationSchema = new mongoose.Schema({
             trim: true,
       },
 
-      fingerprints: [fingerprintSchema],
+      fingerprints: [
+            {
+                url: String,
+                id: String
+            }
+        ],
 
       status: {
             type: String,

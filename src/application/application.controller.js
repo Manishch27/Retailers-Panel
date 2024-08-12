@@ -2,76 +2,65 @@ import cloudinary from '../config/cloudinary.config.js';
 import fs from "node:fs"
 import Application from './application.model.js';
 import { v4 as uuid } from 'uuid';
- 
+
 const createApplication = async (req, res) => {
-    const { fullName, fatherName, dateOfBirth, gender, aadhaarNo, mobileNo, emailId, address, postOffice, district, state, status} = req.body;
+    const { fullName, fatherName, dateOfBirth, gender, aadhaarNo, mobileNo, emailId, address, postOffice, district, state, finger1, finger2, finger3, finger4, finger5 } = req.body;
 
-    const files = req.files;
-
-    console.log(req)
-
-
-    if (files.length !== 5) {
-        return res.status(400).json({ message: 'You must provide exactly 5 fingerprint images' });
-    }
-
-
-    // logic to save the files on cloudinary and store the urls in the database
-
+    const files = [finger1, finger2, finger3, finger4, finger5];
     const fingerprintData = [];
 
+    try {
+        for (const file of files) {
+            if (file) {
+                try {
+                    // Upload base64 data directly to Cloudinary
+                    const result = await cloudinary.uploader.upload(file, { folder: 'fingerprints' });
+                    console.log(result.secure_url);
+
+                    const fingerprint = {
+                        url: result.secure_url,
+                        id: uuid()
+                    };
+
+                    fingerprintData.push(fingerprint);
+                } catch (uploadError) {
+                    console.error('Error uploading file to Cloudinary:', uploadError);
+                    return res.status(500).json({ message: 'Error uploading file to Cloudinary', error: uploadError.message });
+                }
+            }
+        }
 
         try {
-            for (const file of files) {
-                const result = await cloudinary.uploader.upload(file.path, { folder: 'fingerprints' });
-                fs.promises.unlink(file.path); // Clean up local file
+            const application = new Application({
+                fullName,
+                fatherName,
+                dateOfBirth,
+                gender,
+                aadhaarNo,
+                mobileNo,
+                emailId,
+                address,
+                postOffice,
+                district,
+                state,
+                fingerprints: fingerprintData,
+                createdBy: req.user._id,
+            });
 
-                console.log(result.secure_url)
-                const fingerprint = {
-                    url: result.secure_url,
-                    id: uuid()
-                };
+            await application.save();
+            console.log('Application saved successfully:', application);
 
-                fingerprintData.push(fingerprint);
-            }
-                try { 
-                const application = new Application({
-                    fullName,
-                    fatherName,
-                    dateOfBirth,
-                    gender,
-                    aadhaarNo,
-                    mobileNo,
-                    emailId,
-                    address,
-                    postOffice,
-                    district,
-                    state,
-                    fingerprints: fingerprintData,
-                    createdBy: req.user._id,
-                });
-            
-                await application.save();
-
-                } catch (error) {
-                    return res.status(500).json({ message: 'Error in save data into the database', error });    
-                }
-                
             return res.status(201).json({ message: 'Application submitted successfully' });
+        } catch (dbError) {
+            console.error('Error saving data into the database:', dbError);
+            return res.status(500).json({ message: 'Error saving data into the database', error: dbError.message });
         }
-        catch (error) {
-            return res.status(500).json({ message: 'Error in file upload', error });
-        }
-
-
-
-        
-        
-        
-        
+    } catch (error) {
+        console.error('Unexpected error:', error);
+        return res.status(500).json({ message: 'Unexpected error occurred', error: error.message });
     }
-    
-    // Get all the applications from the database
+}
+// Get all the applications from the database
 
 const getAllApplications = async (req, res) => {
     try {
@@ -83,7 +72,6 @@ const getAllApplications = async (req, res) => {
         res.status(500).json({ error: 'Failed to fetch applications' });
     }
 };
-
 
 // get all the applications of the individual retailer
 
@@ -109,7 +97,7 @@ const updateApplicationStatus = async (req, res) => {
     const { status } = req.body;
     try {
         await Application.findByIdAndUpdate
-        (id, { status });
+            (id, { status });
         res.status(200).json({ message: 'Application status updated successfully' });
     }
     catch (error) {

@@ -7,11 +7,9 @@ import { isAuthenticated, isRetailer, isAdmin } from "../middlewares/auth.middle
 
 const applicationRouter = express.Router();
 
-const upload = multer({ dest: 'uploads/' });
-
 applicationRouter.use(isAuthenticated);
 
-applicationRouter.post('/', isRetailer, upload.array('fingerprints', 5), createApplication);
+applicationRouter.post('/', isRetailer, createApplication);
 applicationRouter.get('/', isAdmin, getAllApplications);
 applicationRouter.get('/retailer/:id', getRetailerApplications);
 applicationRouter.put('/:id', isAdmin, updateApplicationStatus);
