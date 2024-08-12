@@ -2,6 +2,7 @@ import cloudinary from '../config/cloudinary.config.js';
 import fs from "node:fs"
 import Application from './application.model.js';
 import { v4 as uuid } from 'uuid';
+import mongoose from 'mongoose';
 
 const createApplication = async (req, res) => {
     const { fullName, fatherName, dateOfBirth, gender, aadhaarNo, mobileNo, emailId, address, postOffice, district, state, finger1, finger2, finger3, finger4, finger5 } = req.body;
@@ -95,12 +96,28 @@ const getRetailerApplications = async (req, res) => {
 const updateApplicationStatus = async (req, res) => {
     const { id } = req.params;
     const { status } = req.body;
+
     try {
-        await Application.findByIdAndUpdate
-            (id, { status });
-        res.status(200).json({ message: 'Application status updated successfully' });
-    }
-    catch (error) {
+        // Validate the ObjectId
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            console.log("invalidId");
+        }
+
+        // Update the application status
+        const updatedApplication = await Application.findByIdAndUpdate(
+            id, 
+            { status },
+            { new: true } // Return the updated document
+        );
+
+        // Check if the application was found and updated
+        if (!updatedApplication) {
+            return res.status(404).json({ error: 'Application not found' });
+        }
+
+        res.status(200).json({ message: 'Application status updated successfully', updatedApplication });
+    } catch (error) {
+        console.error('Error updating application status:', error);
         res.status(500).json({ error: 'Failed to update application status' });
     }
 }
