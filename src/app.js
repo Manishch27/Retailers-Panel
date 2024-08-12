@@ -22,14 +22,6 @@ app.use(express.urlencoded({ limit: '20mb', extended: true }));
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/applications', applicationRouter);
 
-// Serve the frontend
-// if(process.env.NODE_ENV === 'production') {
-// app.use(express.static(path.join(process.cwd(), 'Frontend', 'dist')));
-// app.get('*', (req, res) => {
-//     res.sendFile(path.join(process.cwd(), 'Frontend', 'dist', 'index.html'));
-// });
-// }
-
 if (process.env.NODE_ENV === 'production') {
     const dirpath = path.resolve();
     const frontendDistPath = path.join(dirpath, 'Frontend', 'dist');
