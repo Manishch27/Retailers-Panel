@@ -105,7 +105,7 @@ const updateApplicationStatus = async (req, res) => {
 
         // Update the application status
         const updatedApplication = await Application.findByIdAndUpdate(
-            id, 
+            id,
             { status },
             { new: true } // Return the updated document
         );
@@ -134,5 +134,19 @@ const deleteApplication = async (req, res) => {
     }
 }
 
+const getApplication = async (req, res) => {
+    const { id } = req.params;
+    try {
+        const application = await Application.findById(id);
+        if (!application) {
+            return res.status(404).json({ error: 'Application not found' });
+        }
+        res.status(200).json(application);
+    } catch (error) {
+        // console.error('Error fetching application:', error);
+        // res.status(500).json({ error: 'Failed to fetch application' });
+        res.send("error", error);
+    }
+}
 
-export { createApplication, getAllApplications, getRetailerApplications, updateApplicationStatus, deleteApplication };
+export { createApplication, getAllApplications, getRetailerApplications, updateApplicationStatus, deleteApplication, getApplication };
