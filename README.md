@@ -1,7 +1,7 @@
 # Retailer-Admin Management Application (CSC Details Update)
 
 ## Table of Contents
-- [Screenshots](#screenshots)
+- [Demo Screenshots](#demo-screenshots)
 - [Project Overview](#project-overview)
 - [Features](#features)
   - [Admin Role](#admin-role)
@@ -13,7 +13,7 @@
   - [Frontend Setup](#frontend-setup)
 - [License](#license)
 
-## Screenshots
+## Demo Screenshots
 <div style="display: flex; gap: 10px; flex-wrap: wrap;"> 
  <img src="https://i.ibb.co/ydSY995/Screenshot-244.png" alt="Admin Dashboard" width="300"> 
  <img src="https://i.ibb.co/T4yfj7V/Screenshot-245.png" alt="Application Form" width="300">
