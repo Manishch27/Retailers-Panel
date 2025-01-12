@@ -15,12 +15,12 @@
 
 ## Demo Screenshots
 <div style="display: flex; gap: 10px; flex-wrap: wrap;"> 
- <img src="https://i.ibb.co/ydSY995/Screenshot-244.png" alt="Admin Dashboard" width="300"> 
- <img src="https://i.ibb.co/T4yfj7V/Screenshot-245.png" alt="Application Form" width="300">
+ <img src="https://i.ibb.co/Js8MdFJ/Screenshot-244.png" alt="Login Page" width="300"> 
+ <img src="https://i.ibb.co/T4yfj7V/Screenshot-245.png" alt="Admin Dashboard" width="300">
  <img src="https://i.ibb.co/nQVBjJp/Screenshot-250.png" alt="Retailer Dashboard" width="300"> 
- <img src="https://i.ibb.co/6vyKvSc/Screenshot-248.png" alt="Application Status" width="300"> 
+ <img src="https://i.ibb.co/6vyKvSc/Screenshot-248.png" alt="Application Form" width="300"> 
  <img src="https://i.ibb.co/k22fFy8/Screenshot-247.png" alt="Token Management" width="300"> 
- <img src="https://i.ibb.co/SJVwM3v/Screenshot-246.png" alt="Fingerprint Capture" width="300"> 
+ <img src="https://i.ibb.co/SJVwM3v/Screenshot-246.png" alt="Create a retailer" width="300"> 
 </div>
 
 ## Project Overview
