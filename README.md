@@ -18,7 +18,7 @@
  <img src="https://i.ibb.co/Js8MdFJ/Screenshot-244.png" alt="Login Page" width="300"> 
  <img src="https://i.ibb.co/T4yfj7V/Screenshot-245.png" alt="Admin Dashboard" width="300">
  <img src="https://i.ibb.co/6vyKvSc/Screenshot-248.png" alt="Retailer Dashboard" width="300">
- <img src="https://i.ibb.co/nQVBjJp/Screenshot-250.png" alt="Application Form" width="300">
+ <img src="https://camo.githubusercontent.com/d82be01f308faf1b9be65133f8e761dc1c4f86a5e57ff9801100194ee235b932/68747470733a2f2f692e706f7374696d672e63632f5733473657395a5a2f53637265656e73686f742d3234392e706e67" alt="Application Form" width="300">
  <img src="https://i.ibb.co/k22fFy8/Screenshot-247.png" alt="Token Management" width="300"> 
  <img src="https://i.ibb.co/SJVwM3v/Screenshot-246.png" alt="Create a retailer" width="300"> 
 </div>
